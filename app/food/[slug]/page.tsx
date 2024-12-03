@@ -23,7 +23,8 @@ export default function Page() {
     // }, [params.id]);
 
     if (!food) return null;
-
+    console.log('page')
+    console.log('food')
     return <FoodPage selectedFood={food} onClose={function (): void {
         throw new Error('Function not implemented.');
     }} />;

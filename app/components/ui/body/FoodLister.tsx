@@ -267,6 +267,8 @@ const FoodLister = () => {
 
     const handleFoodClick = (food: MenuItem) => {
         setSelectedFood(food);
+        console.log('handle')
+        console.log(food)
         if (isMobile) {
             setIsModalOpen(true);
         }
