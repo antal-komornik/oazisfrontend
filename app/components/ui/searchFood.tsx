@@ -3,22 +3,24 @@ import React, { useState, useEffect, useRef } from 'react';
 import { searchMenuItems } from '@/app/lib/data';
 import type { MenuItem } from '@/app/lib/data';
 import FoodPage from '@/app/components/ui/body/FoodPage';
+import { useSelectedFood } from '@/app/context/SelectedFoodContext';
 
 interface MouseEvent {
     target: EventTarget | null;
 }
 
 const FoodSearch: React.FC = () => {
+    const { selectedFood, setSelectedFood } = useSelectedFood();
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [filteredFoods, setFilteredFoods] = useState<MenuItem[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [selectedFood, setSelectedFood] = useState<MenuItem | null>(null);
+    // const [selectedFood, setSelectedFood] = useState<MenuItem | null>(null);
     const [isMobile, setIsMobile] = useState<boolean>(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const listboxId = "search-listbox";
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [setIsModalOpen] = useState<boolean>(false);
 
     // Képernyőméret figyelése
     useEffect(() => {
@@ -73,18 +75,14 @@ const FoodSearch: React.FC = () => {
 
     const handleSelect = (food: MenuItem) => {
         setSelectedFood(food);
-        console.log('search')
-        console.log('handle')
-        console.log(food)
+        // console.log('search')
         setSearchTerm('');
         setIsOpen(false);
         if (isMobile) {
-            console.log('mobil')
+            // console.log('mobil')
             setIsModalOpen(true);
         }
-        else {
-            console.log('desktop')
-        }
+
 
     };
 
@@ -93,13 +91,13 @@ const FoodSearch: React.FC = () => {
     };
 
     // Desktop nézet - teljes oldal megjelenítés
-    if (!isMobile && selectedFood) {
-        return (
-            // <div className="fixed inset-0 bg-base-100 z-50">
-            // </div>
-            <FoodPage selectedFood={selectedFood} onClose={handleCloseModal} />
-        );
-    }
+    // if (!isMobile && selectedFood) {
+    //     return (
+    //         // <div className="fixed inset-0 bg-base-100 z-50">
+    //         // </div>
+    //         <FoodPage selectedFood={selectedFood} onClose={handleCloseModal} />
+    //     );
+    // }
 
     return (
         <>
@@ -152,6 +150,7 @@ const FoodSearch: React.FC = () => {
                                         key={food.id}
                                         onClick={() => handleSelect(food)}
                                         className="px-4 py-2 cursor-pointer hover:bg-emerald-400 hover:text-black bg-base-100"
+                                        // eslint-disable-next-line jsx-a11y/role-has-required-aria-props
                                         role="option"
                                     >
                                         <div className="font-medium">{food.name}</div>
@@ -177,7 +176,7 @@ const FoodSearch: React.FC = () => {
                     />
                 </div>
             )} */}
-            {isMobile && isModalOpen && selectedFood && (
+            {isMobile && selectedFood && (
                 <div className="fixed inset-0 z-50">
                     <FoodPage
                         selectedFood={selectedFood}

@@ -35,7 +35,7 @@ import { ImageCardProps } from '@/app/lib/definitions';
 // import Link from 'next/link';
 
 export const ImageCard: React.FC<ImageCardProps> = ({
-    imageSrc, altText, caption, className = '', price }) => {
+    imageSrc, altText, caption, className = '', price, pizzas }) => {
     return (
         <div className={`rounded-lg overflow-hidden shadow-md ${className}`}>
             <div className="relative aspect-video"> {/* Fix képarány */}
@@ -52,12 +52,19 @@ export const ImageCard: React.FC<ImageCardProps> = ({
                     blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
                 />
             </div>
+
             <div className="p-2 flex items-center justify-between">
                 {/* Szöveg konténer fix mérettel */}
                 <div className="w-2/3 overflow-hidden whitespace-nowrap">
                     <p className="text-sm font-medium text-overflow-scale">{caption}</p>
                 </div>
-                <p className="text-sm font-medium whitespace-nowrap">{price} Ft</p>
+                {
+                    pizzas ?
+                        null
+                        // <p className="text-sm font-medium whitespace-nowrap">{pizzas["32"]} </p>
+                        :
+                        <p className="text-sm font-medium whitespace-nowrap">{price} Ft</p>
+                }
             </div>
         </div>
     );

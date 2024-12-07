@@ -5,6 +5,8 @@ import { ImageCard } from "@/app/components/ui/ImageCard";
 import { useModal } from "@/app/context/ModalContext";
 import type { MenuItem } from "@/app/context/ModalContext";
 import Loading from "@/app/loading";
+import { useSelectedFood } from "@/app/context/SelectedFoodContext";
+import FoodPage from "../body/FoodPage";
 
 interface MenuData {
     // id: number;
@@ -22,7 +24,8 @@ const MenuItemCard: React.FC<{
     title: string;
 }> = ({ food, title }) => {
     const { openModal } = useModal();
-    const rounded = food?.price.split('.')[0]
+    // const rounded = food?.price.split('.')[0]
+    const rounded = food?.price
 
     return (
         <div
@@ -35,6 +38,7 @@ const MenuItemCard: React.FC<{
                 altText={food.name}
                 caption={food.name}
                 price={rounded}
+                pizzas={food.prices}
 
             />
         </div>
@@ -42,10 +46,24 @@ const MenuItemCard: React.FC<{
 };
 
 export const WeeklyMenu: React.FC<WeeklyMenuProps> = ({ activeDay }) => {
+    const { selectedFood, setSelectedFood } = useSelectedFood();
     const [currentDay, setCurrentDay] = useState<string>(activeDay);
     const [menuData, setMenuData] = useState<MenuData[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isMobile, setIsMobile] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Képernyőméret figyelése
+    useEffect(() => {
+        const checkIsMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkIsMobile();
+        window.addEventListener('resize', checkIsMobile);
+        return () => window.removeEventListener('resize', checkIsMobile);
+    }, []);
 
     useEffect(() => {
         const fetchDailyMenu = async () => {
@@ -67,6 +85,22 @@ export const WeeklyMenu: React.FC<WeeklyMenuProps> = ({ activeDay }) => {
     useEffect(() => {
         setCurrentDay(activeDay);
     }, [activeDay]);
+
+    const handleFoodClick = (food: MenuItem) => {
+        setSelectedFood(food);
+        if (isMobile) {
+            setIsModalOpen(true);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedFood(null);
+    };
+
+    if (!isMobile && selectedFood) {
+        return <FoodPage selectedFood={selectedFood} onClose={() => setSelectedFood(null)} />;
+    }
 
     if (isLoading) {
         return (
@@ -96,12 +130,16 @@ export const WeeklyMenu: React.FC<WeeklyMenuProps> = ({ activeDay }) => {
     const mainCourse2 = getSectionItems('main_course2');
 
     return (
-        <div className="space-y-8 ">
+        <div className="space-y-8  pb-20  min-h-screen">
             {soupItem && (
+                <div
+                    onClick={() => handleFoodClick(soupItem)}
+                >
                 <MenuItemCard
                     food={soupItem}
                     title="Leves"
-                />
+                    />
+                </div>
             )}
 
             {mainCourse1 && (
@@ -117,6 +155,17 @@ export const WeeklyMenu: React.FC<WeeklyMenuProps> = ({ activeDay }) => {
                     title="Menü B"
                 />
             )}
+
+            {isMobile && isModalOpen && selectedFood && (
+                <div className="fixed inset-0 z-0">
+                    <FoodPage
+                        selectedFood={selectedFood}
+                        onClose={handleCloseModal}
+                        isModal={true}
+                    />
+                </div>
+            )}
         </div>
+
     );
 };

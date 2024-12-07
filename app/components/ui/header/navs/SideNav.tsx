@@ -74,7 +74,7 @@ const SideMenu = () => {
     const [activeDay, setActiveDay] = useState<string>('');
 
     return (
-        <div className="w-64 flex flex-col h-[calc(100vh-4rem)] border-r border-gray-700 bg-base-100">
+        <div className="w-64 flex flex-col h-[calc(100vh-4rem)]  bg-base-100">
             <h6 className="text-xl font-bold px-4 py-3">Étlap</h6>
             <div className="p-4">
                 <CategoryButton />
@@ -89,7 +89,7 @@ const SideMenu = () => {
                     onDayClick={setActiveDay}
                 />
             </div>
-            <div className="flex-1 overflow-y-auto p-4">
+            <div className="flex-1 overflow-y-auto p-4 min-h-screen">
                 <WeeklyMenu activeDay={activeDay} />
             </div>
         </div>

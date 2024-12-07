@@ -4,6 +4,7 @@ import Providers from './components/Providers'
 import { metadata } from '@/app/components/Metadata '
 import Header from './components/ui/header/Header'
 import SideNav from './components/ui/header/navs/SideNav'
+import AppWrapper from './components/ui/AppWrapper'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -19,6 +20,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
+          <AppWrapper>
+
           <div className="min-h-screen bg-base-100 text-base-content">
             <Header />
             <div className="flex min-h-screen">
@@ -32,6 +35,7 @@ export default function RootLayout({
               </div>
             </div>
           </div>
+          </AppWrapper>
           {/* <div className="min-h-screen bg-base-100 text-base-content">
             <Header />
             <div className="flex min-h-screen"> */}

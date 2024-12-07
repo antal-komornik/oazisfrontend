@@ -1,5 +1,7 @@
 // import { RefObject, MutableRefObject } from "react";
 
+import { MenuItemPrices } from "./data";
+
 export interface CustomTextProps {
     content: string;
     style?: 'normal' | 'glitch';
@@ -21,6 +23,7 @@ export interface ImageCardProps {
     className?: string;
     price?:string;
     priority?: undefined | boolean
+    pizzas?: MenuItemPrices
     
 }
 

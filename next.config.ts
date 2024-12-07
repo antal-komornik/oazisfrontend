@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
-  output: 'standalone',
+  output: 'export',
   basePath: '', // Ha a fődomainen fut
   images: {
     unoptimized: true, // Képek optimalizálásának kikapcsolása

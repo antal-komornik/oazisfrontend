@@ -16,6 +16,14 @@ export interface Ingredient {
     name: string
 }
 
+
+// type PizzaSize = "32" | "40" | "60";
+
+export interface PizzaPrices {
+//   [key in PizzaSize]: number;
+    size: number
+}
+
 export interface MenuItem {
     type: string;
     // map(arg0: (item: any) => void): import("react").ReactNode;
@@ -33,6 +41,10 @@ export interface MenuItem {
     is_hidden: boolean;
     image: string | null;
     slug: string
+    is_pizza: boolean
+    prices?: PizzaPrices ;  // Opcionális, csak pizzáknál jelenik meg
+ 
+
 }
 
 
