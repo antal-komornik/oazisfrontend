@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     metadataBase: new URL('https://oazis.example.com'),
 
     // Kulcsszavak
-    keywords: ['étterem', 'magyar konyha', 'napi menü', 'házhozszállítás', 'Oázis'],
+    keywords: ['étterem', 'magyar konyha', 'napi menü', 'házhozszállítás', 'Oázis', 'Oázis étterem',],
 
     // Szerzői információk
     authors: [{ name: 'Komornik Antal', url: 'https://komornikantal.hu' }],
@@ -24,14 +24,21 @@ export const metadata: Metadata = {
     // Ikonok
     icons: {
         icon: '/favicon.ico',
-        // shortcut: '/favicon-16x16.png',
-        // apple: '/favicon.png',
-        // other: [
-        //     {
-        //         rel: 'apple-touch-icon-precomposed',
-        //         url: '/favicon.png',
-        //     },
-        // ],
+        shortcut: '/favicon.png',          // Kis méretű favicon
+        apple: '/favicon.png',
+        other: [
+            {
+                rel: 'icon',
+                type: 'image/png',
+                sizes: '32x32',
+                url: '/favicon.png',
+            },
+            {
+                rel: 'apple-touch-icon',
+                sizes: '180x180',
+                url: '/favicon.png',
+            },
+        ],
     },
 
     // OpenGraph metadata közösségi médiához
@@ -53,12 +60,12 @@ export const metadata: Metadata = {
     },
 
     // Twitter specifikus metadata
-    twitter: {
-        card: 'summary_large_image',
-        title: 'Oázis Étterem',
-        description: 'Az Oázis Étterem napi menü kínálata és étlapja',
-        images: ['/twitter-image.jpg'],
-    },
+    // twitter: {
+    //     card: 'summary_large_image',
+    //     title: 'Oázis Étterem',
+    //     description: 'Az Oázis Étterem napi menü kínálata és étlapja',
+    //     images: ['/twitter-image.jpg'],
+    // },
 
     // Robotok beállítása
     robots: {

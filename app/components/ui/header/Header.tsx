@@ -5,14 +5,14 @@ import ThemeController from '@/app/components/ui/ThemeController';
 import LocationModal from '@/app/components/ui/info/LocationModal';
 import FoodSearch from '../searchFood';
 import Link from 'next/link';
-
+import Image from 'next/image';
 
 const Logo = () => (
     // <div className="flex items-center justify-between md:justify-around ">
     <div className="flex items-center  justify-start md:justify-around lg:justify-between  ">
-        {/* <div className="w-[50px]">
+        <div className="w-[50px]">
             <Image
-                src={'/images/oazis.png'}
+                src={'logo.png'}
                 alt={'oazis'}
                 width={50}
                 height={50}
@@ -23,7 +23,7 @@ const Logo = () => (
                 loading="eager"
 
             />
-        </div> */}
+        </div>
         <Link href='/'>
             <h1 className="text-lg  font-bold leading-tight tracking-[-0.015em]">
                 OÁZIS ÉTTEREM

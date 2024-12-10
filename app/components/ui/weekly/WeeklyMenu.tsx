@@ -4,9 +4,10 @@ import { getDailyMenu } from "@/app/lib/data";
 import { ImageCard } from "@/app/components/ui/ImageCard";
 import { useModal } from "@/app/context/ModalContext";
 import type { MenuItem } from "@/app/context/ModalContext";
-import Loading from "@/app/loading";
+// import Loading from "@/app/loading";
 import { useSelectedFood } from "@/app/context/SelectedFoodContext";
 import FoodPage from "../body/FoodPage";
+import { useLoading } from "@/app/context/LoadingContext";
 
 interface MenuData {
     // id: number;
@@ -46,13 +47,25 @@ const MenuItemCard: React.FC<{
 };
 
 export const WeeklyMenu: React.FC<WeeklyMenuProps> = ({ activeDay }) => {
-    const { selectedFood, setSelectedFood } = useSelectedFood();
+    const { selectedFood, setSelectedFood, setSource } = useSelectedFood();
     const [currentDay, setCurrentDay] = useState<string>(activeDay);
     const [menuData, setMenuData] = useState<MenuData[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+    // const [isLoading,] = useState<boolean>(false)
     const [isMobile, setIsMobile] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { setIsLoading } = useLoading();
+
+    useEffect(() => {
+        // Ha specifikus betöltési logikát szeretnénk a főoldalra
+        const initializePage = async () => {
+            // Itt lehet inicializálni az oldal-specifikus dolgokat
+            setIsLoading(false);
+        };
+
+        initializePage();
+    }, [setIsLoading]);
+
 
     // Képernyőméret figyelése
     useEffect(() => {
@@ -88,6 +101,7 @@ export const WeeklyMenu: React.FC<WeeklyMenuProps> = ({ activeDay }) => {
 
     const handleFoodClick = (food: MenuItem) => {
         setSelectedFood(food);
+        setSource('weekly');    
         if (isMobile) {
             setIsModalOpen(true);
         }
@@ -96,17 +110,25 @@ export const WeeklyMenu: React.FC<WeeklyMenuProps> = ({ activeDay }) => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
         setSelectedFood(null);
+        setSelectedFood(null);
+        setSource(null);
     };
 
-    if (!isMobile && selectedFood) {
-        return <FoodPage selectedFood={selectedFood} onClose={() => setSelectedFood(null)} />;
-    }
+    // if (!isMobile && selectedFood) {
+    //     return <FoodPage selectedFood={selectedFood} onClose={() => setSelectedFood(null)} />;
+    // }
+    // if (!isMobile && selectedFood && source === 'weekly') {
+    //     return <FoodPage selectedFood={selectedFood} onClose={() => {
+    //         setSelectedFood(null);
+    //         setSource(null);
+    //     }} />;
+    // }
 
-    if (isLoading) {
-        return (
-            <Loading size={"loading-lg"} />
-        );
-    }
+    // if (isLoading) {
+    //     return (
+    //         <Loading size={"loading-lg"} />
+    //     );
+    // }
 
     if (error) {
         return <div className="text-red-500 p-4">{error}</div>;
@@ -141,20 +163,29 @@ export const WeeklyMenu: React.FC<WeeklyMenuProps> = ({ activeDay }) => {
                     />
                 </div>
             )}
-
             {mainCourse1 && (
-                <MenuItemCard
-                    food={mainCourse1}
-                    title="Menü A"
-                />
+                <div
+                    onClick={() => handleFoodClick(mainCourse1)}
+                >
+                    <MenuItemCard
+                        food={mainCourse1}
+                        title="Menü A"
+                    />
+                </div>
             )}
 
             {mainCourse2 && (
+                <div
+                    onClick={() => handleFoodClick(mainCourse2)}
+                >
                 <MenuItemCard
                     food={mainCourse2}
                     title="Menü B"
-                />
+                    />
+                </div>
             )}
+
+
 
             {isMobile && isModalOpen && selectedFood && (
                 <div className="fixed inset-0 z-0">

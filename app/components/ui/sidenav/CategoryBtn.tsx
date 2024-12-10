@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { getCategories } from '@/app/lib/data';
 import { Pizza, Coffee, Beer, IceCream, Soup, Salad } from 'lucide-react';
-import Loading from '@/app/loading';
 import { useCategory } from '@/app/context/CategoryContext';
+import { useLoading } from '@/app/context/LoadingContext';
 
 interface Category {
     id: number;
@@ -24,8 +24,19 @@ const categoryIcons: { [key: string]: React.ElementType } = {
 export const CategoryButton: React.FC = () => {
     const { activeCategory, setActiveCategory } = useCategory();
     const [categories, setCategories] = useState<Category[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    // const [isLoading, setIsLoading] = useState(true);
     // const [categories, setCategories] = useState<Category[]>([]);
+    const { setIsLoading } = useLoading();
+
+    useEffect(() => {
+        // Ha specifikus betöltési logikát szeretnénk a főoldalra
+        const initializePage = async () => {
+            // Itt lehet inicializálni az oldal-specifikus dolgokat
+            setIsLoading(false);
+        };
+
+        initializePage();
+    }, [setIsLoading]);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -47,9 +58,9 @@ export const CategoryButton: React.FC = () => {
         return activeCategory === category.name;
     };
 
-    if (isLoading) {
-        return <Loading size={'loading-xs'} />;
-    }
+    // if (isLoading) {
+    //     return <Loading size={'loading-xs'} />;
+    // }
 
     const baseClasses = 'btn btn-sm text-base btn-outline transition-colors duration-200';
 

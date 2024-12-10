@@ -20,7 +20,7 @@ const FoodSearch: React.FC = () => {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const listboxId = "search-listbox";
-    const [setIsModalOpen] = useState<boolean>(false);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     // Képernyőméret figyelése
     useEffect(() => {
@@ -88,6 +88,7 @@ const FoodSearch: React.FC = () => {
 
     const handleCloseModal = () => {
         setSelectedFood(null);
+        // setIsModalOpen(false)
     };
 
     // Desktop nézet - teljes oldal megjelenítés
@@ -176,7 +177,7 @@ const FoodSearch: React.FC = () => {
                     />
                 </div>
             )} */}
-            {isMobile && selectedFood && (
+            {isMobile && isModalOpen && selectedFood && (
                 <div className="fixed inset-0 z-50">
                     <FoodPage
                         selectedFood={selectedFood}

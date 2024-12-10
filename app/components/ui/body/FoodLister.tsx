@@ -12,7 +12,7 @@ interface CategoryMenuItems {
 }
 
 const FoodLister = () => {
-    const { selectedFood, setSelectedFood } = useSelectedFood();
+    const { selectedFood, setSelectedFood, setSource } = useSelectedFood();
     const [menuItems, setMenuItems] = useState<CategoryMenuItems>({});
     const [categories, setCategories] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -57,6 +57,7 @@ const FoodLister = () => {
 
     const handleFoodClick = (food: MenuItem) => {
         setSelectedFood(food);
+        setSource('main');
         if (isMobile) {
             setIsModalOpen(true);
         }
@@ -192,4 +193,5 @@ const FoodLister = () => {
     );
 };
 
-export default FoodLister;
+export default FoodLister
+

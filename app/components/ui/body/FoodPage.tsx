@@ -41,8 +41,11 @@ const FoodPage: React.FC<FoodPageProps> = ({ selectedFood, onClose, isModal = fa
                 <ArrowLeft className="h-6 w-6" />
               </button>
             </div>
-            <div className="navbar-center">
-              <h1 className="text-2xl font-bold">{selectedFood.name}</h1>
+            <div className="navbar-center  overflow-hidden whitespace-wrap">
+              {/* <div className="w-2/3 overflow-hidden whitespace-nowrap"> */}
+              {/* text-overflow-scale */}
+              {/* </div> */}
+              <h1 className="text-xl font-bold text-overflow-scale">{selectedFood.name}</h1>
             </div>
             <div className="navbar-end" />
           </div>
@@ -50,7 +53,7 @@ const FoodPage: React.FC<FoodPageProps> = ({ selectedFood, onClose, isModal = fa
 
         <div className="container mx-auto p-4">
           <div className="card bg-base-100">
-            <div className="card-body">
+            <div className="card-body p-0">
 
             <figure className="w-full h-[300px] relative">
               <Image

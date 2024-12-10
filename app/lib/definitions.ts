@@ -1,6 +1,7 @@
 // import { RefObject, MutableRefObject } from "react";
 
-import { MenuItemPrices } from "./data";
+import { PizzaPrices } from "./data";
+
 
 export interface CustomTextProps {
     content: string;
@@ -23,7 +24,7 @@ export interface ImageCardProps {
     className?: string;
     price?:string;
     priority?: undefined | boolean
-    pizzas?: MenuItemPrices
+    pizzas?: PizzaPrices
     
 }
 
