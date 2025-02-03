@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   },
 
   output: 'standalone',
-  basePath: 'auth/', // Ha a fődomainen fut
+  basePath: '/auth/', // Ha a fődomainen fut
  
   images: {
     unoptimized: true, // Képek optimalizálásának kikapcsolása
