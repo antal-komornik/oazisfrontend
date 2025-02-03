@@ -200,6 +200,6 @@ export const config = {
     "/profile/your_order",
     "/profile/user_data",
     "/checkout",
-    "/((?!auth|api|_next/static|_next/image|favicon.ico).*)",
+    
   ]
 };
