@@ -179,7 +179,7 @@ const handler = NextAuth({
     },
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
-        signIn: '/profile',
+        signIn: '/auth',
         // signUp: '/auth/signup',
     },
     
