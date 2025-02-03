@@ -126,7 +126,6 @@ const FoodLister = () => {
                                         role="button"
                                         tabIndex={0}
                                     >
-                                        console.log(item)
                                         {item.is_pizza ? (
                                             <ImageCard
                                                 imageSrc={item.image || ''}

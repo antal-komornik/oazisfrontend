@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { DailyMenu, MenuItem } from '../types/types';
 
-export const baseURL = 'http://127.0.0.1:8000/api/data';
+export const baseURL = 'https://oazis.komornikantal.hu/api/data';
 
 // export const baseURL = 'https://oazis.komornikantal.hu/api/data/';
 
