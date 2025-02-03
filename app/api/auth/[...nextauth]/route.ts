@@ -181,7 +181,7 @@ const handler = NextAuth({
         signIn: '/auth/',
         // signUp: '/auth/signup',
     },
-    basePath: "/auth"
+    
 });
 
 export { handler as GET, handler as POST };
