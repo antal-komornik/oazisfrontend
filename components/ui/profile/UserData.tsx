@@ -1,21 +1,18 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import router from 'next/router';
 import { z } from 'zod';
-import { getUserData, updateUserProfile, resetUserPwd } from '@/lib/services/auth';
+import { getUserData, updateUserProfile } from '@/lib/services/auth';
 import { useSession } from 'next-auth/react';
 import { sFormErrorsProps, UserDataProps } from '@/lib/types/types';
 import { profileSchema } from '@/lib/utils/validations';
-// import axios from 'axios';
-// import { baseURL } from '@/lib/services/services';
-
+import { useRouter } from 'next/navigation';
 
 // interface EmailData {
 //     email: string;
 // }
 
 const UserData = () => {
-    const { data: session, update } = useSession();
+    const { data: session } = useSession();
     const [userData, setUserData] = useState<UserDataProps>({
         username: '',
         email: '',
@@ -39,65 +36,51 @@ const UserData = () => {
     const [formErrors, setFormErrors] = useState<sFormErrorsProps>({});
     const [error, setError] = useState('');
     const [isEditing, setIsEditing] = useState(false);
-    // const [pwdReset, setPwdReset] = useState<EmailData>({
-    //     email: ''
-    // })
-
-
-    // useEffect(() => {
-    //     console.log('??????????????????????')
-    //     console.log(userData)
-    //     console.log(editData)
-    //     console.log('::::::::::::::::::::::::::')
-    // }, [editData, userData])
+    const router = useRouter();
 
     useEffect(() => {
-        // ha van session
-        if (session?.accessToken) {
-            loadUserData();
-        } else {
-            setError('Nincs érvényes munkamenet');
+        if (!session?.accessToken) {
             router.push('/');
-
+            return;
         }
-    }, [session.accessToken]);
-
-
+        loadUserData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [session?.accessToken, router]);
 
     const loadUserData = async () => {
-        console.log('LOADUSERDATA')
         try {
-            const response = await getUserData(session?.accessToken)
-
-            if (response.status === 200 || response.status === 201) {
-                setUserData({
-                    username: response.data.username,
-                    email: response.data.email,
-                    first_name: response.data.first_name,
-                    last_name: response.data.last_name,
-                    profile: {
-                        address: response.data.profile.address,
-                        phone_number: response.data.profile.address,
-                    }
-                });
-                setEditData({
-                    username: response.data.username,
-                    email: response.data.email,
-                    first_name: response.data.first_name,
-                    last_name: response.data.last_name,
-                    profile: {
-                        address: response.data.profile.address,
-                        phone_number: response.data.profile.phone_number,
-                    }
-                });
-            } else {
-                setError('Failed to load user data: ');
+            const response = await getUserData(session?.accessToken);
+            if (response?.status === 200) {
+                const data = response.data;
+                setUserData(data);
+                setEditData(data);
             }
         } catch (error) {
-            setError('sadasdfFailed to load user data: ' + error);
-            router.back()
+            setError('Hiba az adatok betöltésekor');
+            console.error(error)
+            router.push('/');
         }
     };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!session?.accessToken) {
+            setError('Nincs érvényes munkamenet');
+            return;
+        }
+        try {
+            await updateUserProfile(editData, session?.accessToken);
+            await loadUserData();
+            setIsEditing(false);
+        } catch (error) {
+            if (error instanceof Error && error.message === 'Token lejárt') {                // Irányítsd át a felhasználót a bejelentkezéshez
+
+                router.push('/login');
+            }
+            setError('Hiba a profil módosításakor');
+        }
+
+    }
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,64 +119,46 @@ const UserData = () => {
         }
     };
 
+
+
     // const handleSubmit = async (e: React.FormEvent) => {
     //     e.preventDefault();
+    //     console.log('HANDLESUBMIT')
+
+    //     if (!session?.accessToken) {
+    //         setError('Nincs érvényes munkamenet');
+    //         return;
+    //     }
+
     //     try {
-    //         await updateUserProfile(editData, session?.accessToken);
+    //         // const response = await updateUserProfile(editData, session.accessToken);
     //         setUserData(editData);
     //         setIsEditing(false);
+    //         // if (response.status === 200 || response.status === 201) {
+
+    //         const up = await update({
+    //             ...session,
+    //             user: {
+    //                 ...session.user,
+    //                 firstName: editData.first_name,
+    //                 lastName: editData.last_name,
+    //                 email: editData.email,
+    //                 profile: {
+    //                     address: editData.profile.address,
+    //                     phone_number: editData.profile.phone_number
+    //                 }
+    //             }
+    //         });
+    //         console.log('UPDATE Session')
+    //         console.log(up)
+
+    //         // return loadUserData()
+    //         // }
     //     } catch (error) {
     //         setError('Hiba a profil módosításakor: ' + error);
     //     }
     // };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log('HANDLESUBMIT')
-
-        if (!session?.accessToken) {
-            setError('Nincs érvényes munkamenet');
-            return;
-        }
-
-        try {
-            // const response = await updateUserProfile(editData, session.accessToken);
-            setUserData(editData);
-            setIsEditing(false);
-            // if (response.status === 200 || response.status === 201) {
-
-            const up = await update({
-                ...session,
-                user: {
-                    ...session.user,
-                    firstName: editData.first_name,
-                    lastName: editData.last_name,
-                    email: editData.email,
-                    profile: {
-                        address: editData.profile.address,
-                        phone_number: editData.profile.phone_number
-                    }
-                }
-            });
-            console.log('UPDATE Session')
-            console.log(up)
-
-            // return loadUserData()
-            // }
-        } catch (error) {
-            setError('Hiba a profil módosításakor: ' + error);
-        }
-    };
-
-    const handlePwdReset = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            const data = await resetUserPwd({ email: userData.email });
-            console.log("Password reset request sent:", data);
-        } catch (error) {
-            setError('Hiba a jelszó visszaállításban: ' + error);
-        }
-    }
 
     return (
         <div className="max-w-4xl mx-auto p-6">
@@ -235,12 +200,7 @@ const UserData = () => {
                         >
                             Szerkesztés
                         </button>
-                        <button
-                            onClick={handlePwdReset}
-                            className='btn btn-outline w-8/12'
-                        >
-                            Jelszó visszaállítás
-                        </button>
+
                     </div>
                 </div>
             )}
@@ -329,22 +289,16 @@ const UserData = () => {
                 </form>
             )}
 
-            <div>
+            {/* <div className="block md:hidden">
+                <div className='flex flex-col pt-4 gap-2'>
 
-                <p>Cím: {session?.user?.profile?.address}</p>
-                <p>Telo: {session?.user?.profile?.phone_number}</p>
+                    <button onClick={() => signOut}
+                        className='btn btn-outline w-8/12'>Kijelentkzés</button>
+                </div>
+            </div> */}
 
-                <p>First: {session?.user.firstName}</p>
-                <p>Lasst: {session?.user.lastName}</p>
-                <p>Emai: {session?.user.email}</p>
-                <p>user.Access: {session?.user.accessToken}</p>
-                <p>User.Refresh{session?.user.refreshToken}</p>
-                <p>Access: {session?.accessToken}</p>
-                <p>Refresh: {session?.refreshToken}</p>
-                <p>Expire: {session?.expires}</p>
-                <p>end</p>
-            </div>
-        </div>)
+        </div>
+    )
 }
 
 export default UserData

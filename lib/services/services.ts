@@ -2,8 +2,8 @@ import axios from 'axios'
 import { DailyMenu, MenuItem } from '../types/types';
 
 export const baseURL = 'http://127.0.0.1:8000/api/data';
-// export const baseURL = 'https://oazis.komornikantal.hu/api/data/';
 
+// export const baseURL = 'https://oazis.komornikantal.hu/api/data/';
 
 export const api = axios.create({
     baseURL,
@@ -21,6 +21,7 @@ export const getCategories = async () => {
         throw error;
     }
 };
+
 
 export const getDailyMenu = async () => {
     try {
@@ -44,6 +45,7 @@ export const getFormattedMenu = async () => {
 
 
 
+
 export const searchMenuItems = async (searchTerm: string) => {
     try {
         const response = await api.get<MenuItem[]>(`/filter/menu-items/`, {
@@ -57,5 +59,6 @@ export const searchMenuItems = async (searchTerm: string) => {
         throw error;
     }
 };
+
 
 

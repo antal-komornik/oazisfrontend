@@ -5,7 +5,7 @@ import Header from "@/components/navigation/header/Header";
 import Providers from "@/components/Providers";
 import MobileNav from "@/components/navigation/MobilNav";
 import SideMenu from "@/components/navigation/SideNav";
-import Head from 'next/head'
+// import Head from 'next/head'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,14 +28,14 @@ export default function RootLayout({ children, }: Readonly<{
 }>) {
   return (
     <html lang="en">
-      <Head children={undefined}>
-      </Head>
+      {/* <Head children={undefined}>
+      </Head> */}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
 
           <div className="min-h-screen bg-base-100 text-base-content">
-            <header className="px-4 py-4">
+            <header className="">
               <Header />
             </header>
             <div className="flex min-h-screen">

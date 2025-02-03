@@ -4,19 +4,17 @@ import {
     MapPin,
     Clock,
     Phone,
-    // Mail,
-    // Navigation
+    Mail,
 } from 'lucide-react';
-import MapComponent from './MapConmponent';
-// import MapComponent from './MapComponent';
+// import MapComponent from './MapConmponent';
 const InfoPage = () => {
-    const location = {
-        lat: 46.958495385227316,
-        lng: 18.940845639057216
-    };
+    // const location = {
+    //     lat: 46.958495385227316,
+    //     lng: 18.940845639057216
+    // };
     return (
-        <div className="container mx-auto  max-w-2xl">
-            <div className=" rounded-lg shadow-lg p-4 mb-12">
+        <div className="container mx-auto  max-w-2xl min-h-screen">
+            <div className=" rounded-lg  p-4 mb-12 min-h-screen">
                 <h3 className="font-bold text-2xl mb-6  hidden md:block">OÁZIS ÉTTEREM</h3>
                 <div className="mb-6">
                     <div className="flex items-center gap-2 mb-2">
@@ -30,9 +28,9 @@ const InfoPage = () => {
                     </div>
                 </div>
 
-                <div className="w-full flex items-center bg-base-200 rounded-lg mb-6">
+                {/* <div className="w-full flex items-center bg-base-200 rounded-lg mb-6">
                     <MapComponent center={location} />
-                </div>
+                </div> */}
 
                 <div className="mb-6">
                     <div className="flex items-center gap-2 mb-2">
@@ -55,10 +53,10 @@ const InfoPage = () => {
                             {/* {/ <Phone className="w-4 h-4 text-base-content/60" /> /} */}
                             <p>+36 30 758-0700</p>
                         </div>
-                        {/* <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2">
               < Mail className="w-4 h-4 text-base-content/60" />
               <p>info@peldaetterem.hu</p>
-            </div> */}
+                        </div>
                     </div>
                 </div>
             </div >

@@ -21,8 +21,7 @@ export interface Ingredient {
 // type PizzaSize = "32" | "40" | "60";
 
 export interface PizzaPrices {
-//   [key in PizzaSize]: number;
-    size: number
+    [key: number]: number;  // Ez megengedi a számokat mint kulcsokat
 }
 
 export interface MenuItem {
@@ -44,7 +43,8 @@ export interface MenuItem {
     slug: string
     is_pizza: boolean
     prices?: PizzaPrices ;  // Opcionális, csak pizzáknál jelenik meg
- 
+    packaging_price: string
+    // category: string 
 
 }
 
@@ -69,11 +69,11 @@ export interface LoginFormErrors {
 }
 
 export interface LoginFormProps {
-    setShowLoginModal: (show: boolean) => void;
+    setShowLoginModal?: (show: boolean) => void;
 }
 
 export interface RegisterFormProps {
-    setShowRegisterModal: (show: boolean) => void;
+    setShowRegisterModal?: (show: boolean) => void;
 }
 
 export interface RegisterFormData {
@@ -122,12 +122,35 @@ export interface sFormErrorsProps {
 
 
 
+// export interface LoginResponse {
+//     access: string;
+//     refresh: string;
+//     user: {
+//         email: string;
+//         username: string;
+//         firstName: string;
+//         lastName: string;
+//         profile:{
+//             address: string;
+//             phone_number: string;
+//         };
+//     };
+//     access_expiration?: string;
+//     refresh_expiration?: string;
+// }
+
 export interface LoginResponse {
     access: string;
     refresh: string;
     user: {
         email: string;
         username: string;
+        firstName: string;
+        lastName: string;
+        profile: {
+            address: string;
+            phone_number: string;
+        };
     };
 }
 
@@ -137,3 +160,88 @@ export interface AuthError {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 }
+
+
+
+
+export interface CustomTextProps {
+    content: string;
+    style?: 'normal' | 'glitch';
+    className?: string;
+}
+
+export interface CategoryButtonProps {
+    text: string;
+    onClick: () => void;
+    isActive?: boolean;
+    className?: string;
+}
+
+
+export interface ImageCardProps {
+    imageSrc: string;
+    altText: string;
+    caption: string;
+    className?: string;
+    price?:string;
+    priority?: undefined | boolean
+    pizzas?: PizzaPrices
+    
+}
+
+export interface WeeklyMenuProps {
+    activeDay: string;
+
+}
+
+export interface Food {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+    price?: string;
+    ingredients?: string[];
+}
+  
+export interface FoodModalProps {
+    food: Food;
+    onClose: () => void;
+  }
+
+
+export  interface SideMenuProps {
+    categories: string[];
+    days: string[];
+    activeCategory: string;
+    activeDay: string;
+    onCategoryClick: (category: string) => void;
+    onDayClick: (day: string) => void;
+}
+
+export interface CategoryRefs {
+    [key: string]: HTMLDivElement | null;
+}
+
+// export interface MainContentProps {
+//     categories: string[];
+//     contentRef: React.RefObject<HTMLDivElement>;
+//     categoryRefs: React.MutableRefObject<{ [key: string]: HTMLDivElement | null }>;
+// }
+
+// export interface MainContentProps {
+//     categories: string[];
+//     contentRef: RefObject<HTMLDivElement>;
+//     categoryRefs: RefObject<CategoryRefs>;
+// }
+
+export interface MenuItems {
+    [category: string]: Food[];
+}
+
+export interface MainContentProps {
+    categories: string[];
+    menuItems: MenuItems;
+    contentRef: React.RefObject<HTMLDivElement>;
+    categoryRefs: React.MutableRefObject<CategoryRefs>;
+}
+

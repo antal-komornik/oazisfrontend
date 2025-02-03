@@ -51,6 +51,7 @@ export const CategoryButton: React.FC = () => {
         };
 
         fetchCategories();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const isActiveCategory = (category: Category) => {

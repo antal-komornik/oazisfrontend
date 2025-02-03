@@ -32,3 +32,17 @@ export const profileSchema = z.object({
             .regex(/^(\+?36|06)(20|30|70)\d{7}$/, 'Érvénytelen telefonszám formátum (pl: +36201234567)'),
     })
 });
+
+export const passwordChange = z.object({
+    password1: z.string()
+        .min(1, 'A jelszó megadása kötelező')
+        .min(8, 'A jelszónak legalább 8 karakter hosszúnak kell lennie'),
+    password2: z.string()
+        .min(1, 'A jelszó megerősítése kötelező')
+})
+
+export const passwordReset = z.object({
+    email: z.string()
+        .min(1, 'Az email cím megadása kötelező')
+        .email('Érvénytelen email cím formátum'),
+})

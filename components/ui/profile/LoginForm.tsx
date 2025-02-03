@@ -6,23 +6,25 @@ import { Alert, AlertDescription } from "@/components/ui/Alert";
 import { AlertStatus, LoginFormData, LoginFormErrors, LoginFormProps } from "@/lib/types/types";
 import { loginSchema } from "@/lib/utils/validations";
 import { loginUser } from "@/lib/services/auth";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 // import { baseURL } from "@/lib/services/services";
 // import type { AxiosError } from 'axios';
 
-const GoogleLogin = () => {
-    const handleGoogleLogin = () => {
-        signIn("google", { callbackUrl: "/" });
-    };
+// const GoogleLogin = () => {
+//     const handleGoogleLogin = () => {
+//         signIn("google", { callbackUrl: "/", prompt: "select_account" });
+//     };
 
-    return (
-        <button
-            onClick={handleGoogleLogin}
-            className="w-full bg-white text-gray-700 border border-gray-300 py-2 px-4 rounded flex items-center justify-center gap-2"
-        >
-            Bejelentkezés Google fiókkal
-        </button>
-    );
-};
+//     return (
+//         <button
+//             onClick={handleGoogleLogin}
+//             className="w-full bg-white text-gray-700 border border-gray-300 py-2 px-4 rounded flex items-center justify-center gap-2"
+//         >
+//             Bejelentkezés Google fiókkal
+//         </button>
+//     );
+// };
 
 
 
@@ -35,6 +37,7 @@ const LoginForm = ({ setShowLoginModal }: LoginFormProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [alert, setAlert] = useState<AlertStatus | null>(null);
     const [hasErrors, setHasErrors] = useState(true);
+    const router = useRouter()  
 
     useEffect(() => {
         const hasAnyError = Object.values(errors).some(error => error !== undefined);
@@ -60,7 +63,7 @@ const LoginForm = ({ setShowLoginModal }: LoginFormProps) => {
                 const hasEmptyFields = Object.values(formData).some(value => !value);
                 setHasErrors(hasAnyError || hasEmptyFields);
             } catch (error) {
-                console.log(error)
+                console.error('HIBA: ' + error)
                 setHasErrors(true);
             }
         };
@@ -77,9 +80,7 @@ const LoginForm = ({ setShowLoginModal }: LoginFormProps) => {
         }));
 
         try {
-            // Csak akkor validálunk, ha van érték
             if (value) {
-                // Pick helyett shape használata a validációhoz
                 const fieldSchema = z.object({
                     [name]: loginSchema.shape[name as keyof typeof loginSchema.shape]
                 });
@@ -111,7 +112,10 @@ const LoginForm = ({ setShowLoginModal }: LoginFormProps) => {
                 email: formData.email,
                 password: formData.password,
                 redirect: false,
+                callback: "/"
             });
+
+
             if (result?.error) {
                 setAlert({
                     type: 'error',
@@ -119,8 +123,10 @@ const LoginForm = ({ setShowLoginModal }: LoginFormProps) => {
                 });
             }
             else {
-                setShowLoginModal(false)
-                // router.push('/');
+                if (setShowLoginModal) {
+                    setShowLoginModal(false)
+                }
+                router.push('/');
                 // router.refresh();
             }
         } catch (err) {
@@ -139,7 +145,10 @@ const LoginForm = ({ setShowLoginModal }: LoginFormProps) => {
         <div className="flex justify-center items-center w-full overflow-auto">
             <div className="card bg-base-100 shadow-xl">
                 <div className="card-body p-0">
+                    <div className="hidden md:block">
+
                     <h2 className="card-title justify-center text-2xl mb-4">Bejelentkezés</h2>
+                    </div>
                     {alert && (
                         <Alert variant={alert.type === 'error' ? "destructive" : "default"}>
                             <AlertDescription>
@@ -181,8 +190,8 @@ const LoginForm = ({ setShowLoginModal }: LoginFormProps) => {
                             {errors.password && (
                                 <p className="mt-1 text-sm text-red-500">{errors.password}</p>
                             )}
-                            <label className="label">
-                                <a href="#" className="label-text-alt link link-hover">Elfelejtett jelszó?</a>
+                            <label className="label" >
+                                <Link href="/auth/password-reset" onClick={() => setShowLoginModal ? setShowLoginModal(false) : null} className="label-text-alt link link-hover ">Elfelejtetetted jelszavad?</Link>
                             </label>
                         </div>
 
@@ -196,9 +205,9 @@ const LoginForm = ({ setShowLoginModal }: LoginFormProps) => {
                         </button>
                     </form>
 
-                    <div className="divider">vagy</div>
+                    {/* <div className="divider">vagy</div> */}
 
-                    <div><GoogleLogin /></div>
+                    {/* <div><GoogleLogin /></div> */}
                 </div>
             </div>
         </div>

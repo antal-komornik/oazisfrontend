@@ -2,15 +2,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { searchMenuItems } from '@/lib/services/services';
 import type { MenuItem } from '@/lib/types/types';
-// import FoodPage from '@/app/components/ui/body/FoodPage';
-// import { useSelectedFood } from '@/app/context/SelectedFoodContext';
+import FoodPage from '@/components/ui/body/FoodPage';
+import { useSelectedFood } from '@/lib/hooks/SelectedFoodContext';
 
 interface MouseEvent {
     target: EventTarget | null;
 }
 
 const FoodSearch: React.FC = () => {
-    // const { selectedFood, setSelectedFood } = useSelectedFood();
+    const { selectedFood, setSelectedFood } = useSelectedFood();
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [filteredFoods, setFilteredFoods] = useState<MenuItem[]>([]);
@@ -75,9 +75,11 @@ const FoodSearch: React.FC = () => {
 
     const handleSelect = (food: MenuItem) => {
         setSelectedFood(food);
+        // console.log('search')
         setSearchTerm('');
         setIsOpen(false);
         if (isMobile) {
+            // console.log('mobil')
             setIsModalOpen(true);
         }
 
@@ -86,6 +88,7 @@ const FoodSearch: React.FC = () => {
 
     const handleCloseModal = () => {
         setSelectedFood(null);
+        // setIsModalOpen(false)
     };
 
     // Desktop nézet - teljes oldal megjelenítés
@@ -111,7 +114,7 @@ const FoodSearch: React.FC = () => {
                         }}
                         onFocus={() => setIsOpen(true)}
                         placeholder="Keress ételt..."
-                        className=" py-1 px-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        className="w-full py-1 px-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                         role="combobox"
                         aria-expanded={isOpen}
                         aria-controls={listboxId}
@@ -191,12 +194,11 @@ const FoodSearch: React.FC = () => {
             )} */}
             {isMobile && isModalOpen && selectedFood && (
                 <div className="fixed inset-0 z-50">
-                    {/* ----------- */}
-                    {/* <FoodPage
+                    <FoodPage
                         selectedFood={selectedFood}
                         onClose={handleCloseModal}
                         isModal={true}
-                    /> */}
+                    />
                 </div>
             )}
         </>

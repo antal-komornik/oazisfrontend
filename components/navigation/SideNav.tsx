@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { CategoryButton } from "@/components/ui/sidenav/CategoryBtn";
 import { DaySelector } from "@/components/ui/sidenav/DaySelector";
 import { useCurrentDay } from "@/lib/hooks/daySelector";
-// import { WeeklyMenu } from "@/app/components/ui/weekly/WeeklyMenu";
+import { WeeklyMenu } from "@/components/ui/weekly/WeeklyMenu";
 
 const SideMenu = () => {
     const currentDay = useCurrentDay();
@@ -29,7 +29,7 @@ const SideMenu = () => {
                 />
             </div>
             <div className="flex-1 overflow-y-auto p-4 min-h-screen">
-                {/* <WeeklyMenu activeDay={activeDay} /> */}
+                <WeeklyMenu activeDay={activeDay} />
             </div>
         </div>
     );

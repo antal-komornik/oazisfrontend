@@ -1,5 +1,4 @@
 'use client';
-import { signIn } from "next-auth/react";
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { Alert, AlertDescription } from "@/components/ui/Alert";
@@ -75,7 +74,9 @@ const RegisterForm = ({ setShowRegisterModal }: RegisterFormProps) => {
             registerSchema.parse(formData);
             const res = await SendRegistrationForm(formData)
             if (res.status === 200 || res.status === 201) {
-                setShowRegisterModal(false)
+                if (setShowRegisterModal) {
+                    setShowRegisterModal(false)
+                }
             }
 
         } catch (err) {
@@ -116,16 +117,19 @@ const RegisterForm = ({ setShowRegisterModal }: RegisterFormProps) => {
         }
     };
 
-    const handleGoogleRegister = () => {
-        signIn("google");
-    };
+    // const handleGoogleRegister = () => {
+    //     signIn("google");
+    // };
 
     return (
         <div className="flex  justify-center items-center w-full ">
 
             <div className="card  bg-base-100 shadow-xl">
                 <div className="card-body p-0">
-                    <h2 className="card-title justify-center text-2xl mb-4">Regisztráció</h2>
+                    <div className='hidden md:block'>
+
+                        <h2 className="card-title justify-center text-2xl mb-4 ">Regisztráció</h2>
+                    </div>
                     {alert && (
                         <Alert variant={alert.type === 'error' ? "destructive" : "default"}>
                             <AlertDescription>
@@ -162,7 +166,7 @@ const RegisterForm = ({ setShowRegisterModal }: RegisterFormProps) => {
                                 type="email"
                                 id="email"
                                 name="email"
-                                placeholder="email@example.com"
+                                placeholder="email@pelda.com"
                                 className="input input-bordered"
                                 value={formData.email}
                                 onChange={handleChange}
@@ -223,7 +227,7 @@ const RegisterForm = ({ setShowRegisterModal }: RegisterFormProps) => {
                             {isLoading ? 'Regisztráció...' : 'Regisztráció'}
                         </button>
                     </form>
-
+                    {/*
                     <div className="divider">vagy</div>
 
                     <button
@@ -231,7 +235,7 @@ const RegisterForm = ({ setShowRegisterModal }: RegisterFormProps) => {
                         className="btn btn-outline w-full"
                     >
                         Regisztráció Google-lel
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </div>
